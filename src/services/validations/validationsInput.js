@@ -8,6 +8,15 @@ const validateId = (id) => {
   return { type: null, message: '' };
 };
 
+const validateIdSales = (id) => {
+  const { error } = schemas.idSales.validate(id);
+
+  if (error) return { type: 'INVALID_VALUE', message: '"id" must be a number' };
+
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
+  validateIdSales,
 };
