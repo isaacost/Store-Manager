@@ -80,7 +80,7 @@ describe('Testando a camada controller de products', function () {
 
     await productsController.create(req, res);
 
-    // expect(res.status).to.have.been.calledWith(422);
+    expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' })
   });
 
