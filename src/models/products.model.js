@@ -28,9 +28,16 @@ const update = async (id, name) => {
   return changedRows;
 };
 
+const remove = async (id) => {
+  const query = 'DELETE FROM products WHERE id = ?';
+  const [deletedProduct] = await connection.execute(query, [id]);
+  return deletedProduct;
+};
+
 module.exports = {
   findAll,
   findById,
   create,
   update,
+  remove,
 };
