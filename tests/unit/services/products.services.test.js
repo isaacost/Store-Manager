@@ -52,13 +52,31 @@ describe('Testando service do products', function () {
     expect(result.message).to.be.deep.equal({ id: 3, name: 'ProdutoX' })
   });
 
-  it('Testando creat do produt passando um nome com menos de 5 caracteres', async function () {
+  it('Testando creat do product passando um nome com menos de 5 caracteres', async function () {
     sinon.stub(productsModel, 'create').resolves(3)
     const result = await productsService.create('a')
 
     expect(result.type).to.be.equal('INVALID_NAME');
     expect(result.message).to.be.deep.equal('"name" length must be at least 5 characters long')
 
+  });
+
+  it('Testando update do product passando um nome com mais de 5 caracteres e com id correto', async function () {
+    sinon.stub(productsModel, 'findById').resolves({ id: 1, name: 'Mjonir' });
+    sinon.stub(productsModel, 'update').resolves(1);
+    const result = await productsService.update(1, 'Manopla do Destino');
+    expect(result.type).to.be.equal(null);
+    expect(result.message).to.be.deep.equal({ id: 1, name: 'Manopla do Destino' });
+  });
+
+  it('Testando update do product passando um nome com menos de 5 caracteres', async function () {
+    sinon.stub(productsModel, 'findById').resolves({ id: 1, name: 'Mjonir' });
+    sinon.stub(productsModel, 'update').resolves(1);
+
+    const result = await productsService.update(1, 'a')
+
+    expect(result.type).to.be.equal('INVALID_NAME');
+    expect(result.message).to.be.deep.equal('"name" length must be at least 5 characters long');
   });
 
   afterEach(sinon.restore);
