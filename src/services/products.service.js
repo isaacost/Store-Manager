@@ -11,9 +11,9 @@ const findById = async (id) => {
   if (error.type) return error;
 
   const products = await productsModel.findById(id);
-  if (products) return products;
+  if (!products) return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
 
-  return { type: '', message: 'Product not found' };
+  return products;
 };
 
 const create = async (name) => {

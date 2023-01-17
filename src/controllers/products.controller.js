@@ -8,9 +8,9 @@ const findAll = async (_req, res) => {
 const findById = async (req, res) => {
   const { id } = req.params;
   const product = await productsService.findById(id);
-// console.log(product);
+  console.log(product);
 
-  if (product.length === 0) {
+  if (product.length === 0 || product.type === 'PRODUCT_NOT_FOUND') {
     return res.status(404).json({ message: 'Product not found' });
   }
   return res.status(200).json(product[0]);
