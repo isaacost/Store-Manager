@@ -1,19 +1,5 @@
 const connection = require('./db/connection');
 
-// const findAll = async () => {
-//   const query = 'SELECT * FROM StoreManager.sales';
-//   const [result] = await connection.execute(query);
-
-//   return result;
-// };
-
-// const findById = async (id) => {
-//   const query = 'SELECT * FROM StoreManager.sales WHERE id = ?';
-//   const [result] = await connection.execute(query, [id]);
-
-//   return result;
-// };
-
 const createSale = async () => {
   const query1 = 'INSERT INTO sales (date) VALUES(NOW())';
   const [{ insertId }] = await connection.execute(query1);
@@ -41,8 +27,38 @@ const create = async (body) => {
   return { type: null, message: result };
 };
 
+const findAll = async () => {
+  const query = `SELECT sale_id, date, product_id, quantity FROM sales sa
+INNER JOIN sales_products s
+ON s.sale_id = sa.id;`;
+  const [sales] = await connection.execute(query);
+  return sales.map(
+    ({ sale_id: saleId, date, product_id: productId, quantity }) => ({
+      saleId,
+      date,
+      productId,
+      quantity,
+    }),
+  );
+};
+
+const findById = async (id) => {
+  const query = `SELECT sale_id, date, product_id, quantity FROM sales sa
+INNER JOIN sales_products s
+ON s.sale_id = sa.id
+HAVING sale_id = ?;`;
+  const [sale] = await connection.execute(query, [id]);
+  if (!sale || sale.length === 0) return undefined;
+  const result = sale.map(({ date, product_id: productId, quantity }) => ({
+    date,
+    productId,
+    quantity,
+  }));
+  return result;
+};
+
 module.exports = {
-  // findAll,
-  // findById,
+  findAll,
+  findById,
   create,
 };

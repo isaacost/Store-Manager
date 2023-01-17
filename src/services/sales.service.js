@@ -1,21 +1,6 @@
 const { salesModel, productsModel } = require('../models');
 const validationsInput = require('./validations/validationsInput');
 
-// const findAll = async () => {
-//   const sales = await salesModel.findAll();
-//   return sales;
-// };
-
-// const findById = async (id) => {
-//   const error = validationsInput.validateIdSales(id);
-//   if (error.type) return error;
-
-//   const sales = await salesModel.findById(id);
-//   if (sales) return sales;
-
-//   return { type: '', message: 'Sale not found' };
-// };
-
 const create = async (body) => {
   const { type, message } = validationsInput.validateCreateSale(body);
   if (type) return { type, message };
@@ -39,8 +24,19 @@ const create = async (body) => {
   return { type: null, message: result.message };
 };
 
+const findAll = async () => {
+  const sales = await salesModel.findAll();
+  return { type: null, message: sales };
+};
+
+const findById = async (id) => {
+  const sale = await salesModel.findById(id);
+  if (!sale) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  return { type: null, message: sale };
+};
+
 module.exports = {
-  // findAll,
-  // findById,
+  findAll,
+  findById,
   create,
 };
