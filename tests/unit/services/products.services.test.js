@@ -35,14 +35,31 @@ describe('Testando service do products', function () {
     
   });
 
-it('Testando findById do product passando um id invalido', async function () {
+  it('Testando findById do product passando um id invalido', async function () {
     sinon.stub(productsModel, 'findById').resolves(undefined)
     
-  const result = await productsService.findById('a');
+    const result = await productsService.findById('a');
   
     expect(result.type).to.be.equal('INVALID_VALUE');
     expect(result.message).to.be.deep.equal('"id" must be a number')
-  })
+  });
+
+  it('Testando creat do produt passando um nome com mais de 5 caracteres', async function () {
+    sinon.stub(productsModel, 'create').resolves(3);
+    const result = await productsService.create('ProdutoX');
+    
+    expect(result.type).to.be.equal(null);
+    expect(result.message).to.be.deep.equal({ id: 3, name: 'ProdutoX' })
+  });
+
+  it('Testando creat do produt passando um nome com menos de 5 caracteres', async function () {
+    sinon.stub(productsModel, 'create').resolves(3)
+    const result = await productsService.create('a')
+
+    expect(result.type).to.be.equal('INVALID_NAME');
+    expect(result.message).to.be.deep.equal('"name" length must be at least 5 characters long')
+
+  });
 
   afterEach(sinon.restore);
 });

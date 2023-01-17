@@ -26,5 +26,13 @@ describe('Testando models do products', function () {
     expect(result).to.deep.equal(mock.findProduct);
   });
 
+it('Testando create do product', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
+
+    const result = await productsModel.create('ProductX')
+
+    expect(result).to.be.equal(3)
+  })
+
   afterEach(sinon.restore);
 });

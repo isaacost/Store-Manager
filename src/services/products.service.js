@@ -17,8 +17,10 @@ const findById = async (id) => {
 };
 
 const create = async (name) => {
-  const product = await productsModel.create(name);
-  return product;
+  const error = validationsInput.validateNameProduct(name);
+  if (error.type) return error;
+  const id = await productsModel.create(name);
+  return { type: null, message: { id, name } };
 };
 
 const update = async (id, name) => {
