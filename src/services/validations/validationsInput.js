@@ -28,8 +28,19 @@ const validateCreateSale = (body) => {
   return { type: null, message: '' };
 };
 
+const validateNameProduct = (name) => {
+  const { error } = schemas.nameProductSchema.validate(name);
+  if (error) {
+    return {
+      type: 'INVALID_NAME', message: '"name" length must be at least 5 characters long',
+    };
+  }
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
   validateIdSales,
   validateCreateSale,
+  validateNameProduct,
 };

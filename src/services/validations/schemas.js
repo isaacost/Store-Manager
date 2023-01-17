@@ -9,8 +9,11 @@ const itemsArray = joi.object({
   quantity: joi.number().integer().min(1),
 });
 
+const nameProductSchema = joi.string().min(5).max(30).required();
+
 module.exports = {
   idProduct,
   idSales,
   itemsArray,
+  nameProductSchema,
 };
