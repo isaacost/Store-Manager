@@ -16,7 +16,20 @@ const validateIdSales = (id) => {
   return { type: null, message: '' };
 };
 
+const validateCreateSale = (body) => {
+  let msgError = '';
+  body.map((e) => {
+    const { error } = schemas.itemsArray.validate(e);
+    if (error && !msgError) msgError = error.message;
+    return e;
+  });
+
+  if (msgError) return { type: 'INVALID_VALUE', message: msgError };
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
   validateIdSales,
+  validateCreateSale,
 };
